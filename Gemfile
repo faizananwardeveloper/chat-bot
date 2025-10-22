@@ -61,3 +61,9 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "jquery-rails", "~> 4.6"
+
+gem "redis", "~> 5.4"
+
+gem "devise", "~> 4.9"
