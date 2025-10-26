@@ -67,3 +67,5 @@ gem "jquery-rails", "~> 4.6"
 gem "redis", "~> 5.4"
 
 gem "devise", "~> 4.9"
+
+gem "tailwindcss-rails", "~> 4.3"

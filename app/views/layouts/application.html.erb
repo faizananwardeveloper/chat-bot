@@ -1,28 +1,75 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= content_for(:title) || "Chat Bot" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<head>
+  <title>ChatApp - Real-time Messaging</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+</head>
+<body class="bg-gray-50 min-h-screen">
 
-    <%= yield :head %>
+<nav class="bg-white shadow-lg border-b border-gray-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16">
+      <div class="flex items-center">
+        <%= link_to root_path, class: "flex items-center space-x-2" do %>
+          <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
+          </div>
+          <span class="text-xl font-bold text-gray-900">ChatApp</span>
+        <% end %>
+      </div>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+      <div class="flex items-center space-x-4">
+        <% if user_signed_in? %>
+          <div class="flex items-center space-x-4">
+            <span class="text-sm text-gray-700">Welcome, <span class="font-medium"><%= current_user.name %></span></span>
+            <%= link_to users_path, class: "text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition duration-150 ease-in-out" do %>
+              <svg class="w-5 h-5 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+              </svg>
+              Users
+            <% end %>
+            <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-md text-sm font-medium transition duration-150 ease-in-out" do %>
+              Logout
+            <% end %>
+          </div>
+        <% else %>
+          <div class="flex items-center space-x-2">
+            <%= link_to "Login", new_user_session_path, class: "text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" %>
+            <%= link_to "Register", new_user_registration_path, class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-150 ease-in-out" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</nav>
 
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
+<!-- Main Content -->
+<main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+  <%= yield %>
+</main>
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
-  </head>
+<!-- Flash Messages -->
+<% if notice %>
+  <div class="fixed top-20 right-4 z-50">
+    <div class="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-transform duration-300 ease-in-out">
+      <%= notice %>
+    </div>
+  </div>
+<% end %>
 
-  <body>
-    <%= yield %>
-  </body>
+<% if alert %>
+  <div class="fixed top-20 right-4 z-50">
+    <div class="bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-transform duration-300 ease-in-out">
+      <%= alert %>
+    </div>
+  </div>
+<% end %>
+</body>
 </html>
